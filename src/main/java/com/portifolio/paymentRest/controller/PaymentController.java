@@ -49,13 +49,6 @@ public class PaymentController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-//	@PostMapping(path = "admin/students")
-//	@Transactional(rollbackFor = Exception.class)
-//	public ResponseEntity<?> save(@Valid @RequestBody Student student){
-//		return new ResponseEntity<>(studentRepository.save(student), HttpStatus.CREATED);
-//	}
-	
-	
 	@PostMapping(path = "/creditCard")
 	public ResponseEntity<?> paymentByCreditCard(@Valid @RequestBody CardDto cardDto) {
 		buyerRepository.save(cardDto.extractBuyer());
