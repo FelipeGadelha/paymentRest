@@ -13,9 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotNull;
+
+import com.portifolio.paymentRest.enuns.StatusPayment;
+import com.portifolio.paymentRest.enuns.TypePayment;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -26,10 +26,7 @@ public abstract class Payment implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	private Long id;
-	
-	@NotNull
-	@Digits(fraction = 2, integer = 20)
-	@DecimalMin(value = "0.01")
+
 	private BigDecimal amount;
 	
 	@ManyToOne(optional = false, cascade = CascadeType.ALL)
@@ -43,6 +40,10 @@ public abstract class Payment implements Serializable {
 	
 	private TypePayment typePayment;
 
+	public Payment() {
+		
+	}
+	
 	public Payment(BigDecimal amount, Client client, Buyer buyer) {
 		this.amount = amount;
 		this.client = client;
@@ -93,6 +94,11 @@ public abstract class Payment implements Serializable {
 	}
 	public void setTypePayment(TypePayment typePayment) {
 		this.typePayment = typePayment;
+	}
+	
+	public void processPayment() {
+		setStatusPayment(StatusPayment.IN_ANALYSIS);
+		
 	}
 
 	@Override

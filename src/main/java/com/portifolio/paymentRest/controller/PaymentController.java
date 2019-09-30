@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,9 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.portifolio.paymentRest.dto.BoletoDto;
 import com.portifolio.paymentRest.dto.CardDto;
 import com.portifolio.paymentRest.models.Boleto;
-import com.portifolio.paymentRest.models.Buyer;
 import com.portifolio.paymentRest.models.Card;
-import com.portifolio.paymentRest.models.Client;
 import com.portifolio.paymentRest.repository.BoletoRepository;
 import com.portifolio.paymentRest.repository.BuyerRepository;
 import com.portifolio.paymentRest.repository.CardRepository;
@@ -49,7 +48,7 @@ public class PaymentController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@PostMapping(path = "/creditCard")
+	@PostMapping(path = "/creditCard", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<?> paymentByCreditCard(@Valid @RequestBody CardDto cardDto) {
 		buyerRepository.save(cardDto.extractBuyer());
 		clientRepository.save(cardDto.extractClient());

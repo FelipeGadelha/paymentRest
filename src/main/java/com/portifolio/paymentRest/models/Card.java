@@ -4,14 +4,23 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.portifolio.paymentRest.enuns.TypePayment;
 
 @Entity
 public class Card extends Payment{
 
+	private static final long serialVersionUID = 1L;
+	
 	private String cardHolderName;
 	private String cardNumber;
 	private LocalDate cardExpirationDate;
 	private String cardCvv;	
+	
+	public Card() {
+	}
 	
 	public Card(BigDecimal amount, Client client, Buyer buyer, String cardHolderName, String cardNumber, LocalDate cardExpirationDate, String cardCvv) {
 		super(amount, client, buyer);
@@ -49,10 +58,7 @@ public class Card extends Payment{
 	public TypePayment getTypePayment() {
 		return TypePayment.CREDIT_CARD;
 	}
-	public void processPayment() {
-		super.setStatusPayment(StatusPayment.APPROVED);
-		
-	}
+	
 	@Override
 	public String toString() {
 		return "Card [cardHolderName=" + cardHolderName + ", cardNumber=" + cardNumber + ", cardExpirationDate="

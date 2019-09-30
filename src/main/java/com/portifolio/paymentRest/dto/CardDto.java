@@ -5,9 +5,22 @@ import java.time.LocalDate;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.CreditCardNumber;
+import org.hibernate.validator.constraints.br.CPF;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.portifolio.paymentRest.models.Buyer;
 import com.portifolio.paymentRest.models.Card;
 import com.portifolio.paymentRest.models.Client;
@@ -19,20 +32,54 @@ public class CardDto {
 	@DecimalMin(value = "0.01")
 	private BigDecimal amount;
 	
+	@NotNull(message = "customer name is required")
+	@NotBlank
 	private String clientName;
-	
+	@NotNull(message = "buyer name is required")
+	@NotBlank
 	private String buyerName;
-	
+	@Email(message = "E-mail is required")
 	private String buyerEmail;
-	
+	@NotNull(message = "cpf is required")
+	@CPF
 	private String buyerCpf;
-	
+	@NotNull(message = "card hoder name is required")
+	@NotBlank
 	private String cardHolderName;
-	private String cardNumber;
-	@JsonFormat(pattern="dd/MM/yyyy")
+	@NotNull(message = "credit card number is required")
+	@CreditCardNumber
+	private String cardNumber; ;
+//	@JsonDeserialize(using = LocalDateDeserializer.class)  
+//	@JsonSerialize(using = LocalDateSerializer.class) 
+//	@DateTimeFormat(iso = ISO.DATE)
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate cardExpirationDate;
+	
+	@NotNull(message = "cvv is required")
+	@Size(min = 3, max = 3, message = "must contain 3 numbers")
 	private String cardCvv;
 	
+	public CardDto(BigDecimal amount,
+			String clientName,
+			String buyerName,
+			String buyerEmail,
+			String buyerCpf,
+			String cardHolderName,
+			String cardNumber,
+			LocalDate cardExpirationDate,
+			String cardCvv) {
+		super();
+		this.amount = amount;
+		this.clientName = clientName;
+		this.buyerName = buyerName;
+		this.buyerEmail = buyerEmail;
+		this.buyerCpf = buyerCpf;
+		this.cardHolderName = cardHolderName;
+		this.cardNumber = cardNumber;
+		this.cardExpirationDate = cardExpirationDate;
+		this.cardCvv = cardCvv;
+	}
+
 	public BigDecimal getAmount() {
 		return amount;
 	}

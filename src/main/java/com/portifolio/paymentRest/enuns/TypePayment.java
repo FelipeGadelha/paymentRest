@@ -1,4 +1,4 @@
-package com.portifolio.paymentRest.models;
+package com.portifolio.paymentRest.enuns;
 
 public enum TypePayment {
 

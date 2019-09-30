@@ -4,7 +4,11 @@ import java.math.BigDecimal;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.br.CPF;
 
 import com.portifolio.paymentRest.models.Boleto;
 import com.portifolio.paymentRest.models.Buyer;
@@ -17,12 +21,16 @@ public class BoletoDto {
 	@DecimalMin(value = "0.01")
 	private BigDecimal amount;
 	
+	@NotNull(message = "customer name is required")
+	@NotBlank
 	private String clientName;
-	
+	@NotNull(message = "buyer name is required")
+	@NotBlank
 	private String buyerName;
-	
+	@Email(message = "E-mail is required")
 	private String buyerEmail;
-	
+	@NotNull(message = "cpf is required")
+	@CPF
 	private String buyerCpf;
 
 	public BoletoDto(BigDecimal amount, String clientName, String buyerName, String buyerEmail, String buyerCpf) {
