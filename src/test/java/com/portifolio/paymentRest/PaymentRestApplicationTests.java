@@ -1,4 +1,4 @@
-package com.portifolio.RestPagamentos;
+package com.portifolio.paymentRest;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class RestPagamentosApplicationTests {
+public class PaymentRestApplicationTests {
 
 	@Test
 	public void contextLoads() {

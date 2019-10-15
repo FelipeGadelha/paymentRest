@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import com.portifolio.paymentRest.enuns.TypePayment;
 
@@ -23,7 +21,7 @@ public class Card extends Payment{
 	}
 	
 	public Card(BigDecimal amount, Client client, Buyer buyer, String cardHolderName, String cardNumber, LocalDate cardExpirationDate, String cardCvv) {
-		super(amount, client, buyer);
+		super(amount, client, buyer, TypePayment.CREDIT_CARD);
 		this.cardHolderName = cardHolderName;
 		this.cardNumber = cardNumber;
 		this.cardExpirationDate = cardExpirationDate;

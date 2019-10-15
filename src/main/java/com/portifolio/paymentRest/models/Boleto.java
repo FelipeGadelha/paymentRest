@@ -4,9 +4,7 @@ import java.math.BigDecimal;
 import java.util.Random;
 
 import javax.persistence.Entity;
-import javax.validation.constraints.NotBlank;
 
-import com.portifolio.paymentRest.enuns.StatusPayment;
 import com.portifolio.paymentRest.enuns.TypePayment;
 
 @Entity
@@ -17,9 +15,8 @@ public class Boleto extends Payment {
 	public Boleto() {
 
 	}
-
 	public Boleto(BigDecimal amount, Client client, Buyer buyer) {
-		super(amount, client, buyer);
+		super(amount, client, buyer, TypePayment.BOLETO);
 
 	}
 
@@ -29,11 +26,6 @@ public class Boleto extends Payment {
 
 	public void setBoletoNumber(String boletoNumber) {
 		this.boletoNumber = boletoNumber;
-	}
-
-	@Override
-	public TypePayment getTypePayment() {
-		return TypePayment.BOLETO;
 	}
 
 	@Override

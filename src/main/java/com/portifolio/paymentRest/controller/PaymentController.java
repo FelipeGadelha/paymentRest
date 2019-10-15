@@ -4,7 +4,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,23 +21,17 @@ import com.portifolio.paymentRest.repository.CardRepository;
 import com.portifolio.paymentRest.repository.ClientRepository;
 
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/payment")
 public class PaymentController {
 
 	@Autowired
 	private final BoletoRepository boletoRepository;
 	@Autowired
 	private final CardRepository cardRepository;
-	@Autowired
-	private final BuyerRepository buyerRepository;
-	@Autowired
-	private final ClientRepository clientRepository;
 	
-	public PaymentController(BoletoRepository boletoRepository, CardRepository cardRepository, BuyerRepository buyerRepository, ClientRepository clientRepository) {
+	public PaymentController(BoletoRepository boletoRepository, CardRepository cardRepository) {
 		this.boletoRepository = boletoRepository;
 		this.cardRepository = cardRepository;
-		this.buyerRepository = buyerRepository;
-		this.clientRepository = clientRepository;
 	}
 	
 	@GetMapping(path = "/{id}")
@@ -48,26 +41,24 @@ public class PaymentController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@PostMapping(path = "/creditCard", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(path = "/creditCard")
 	public ResponseEntity<?> paymentByCreditCard(@Valid @RequestBody CardDto cardDto) {
-		buyerRepository.save(cardDto.extractBuyer());
-		clientRepository.save(cardDto.extractClient());
+
 		Card card = cardDto.extractCard();
 		card.processPayment();
 		cardRepository.save(card);
-		return new ResponseEntity<>(cardRepository.save(card), HttpStatus.CREATED);
+		return new ResponseEntity<>(card, HttpStatus.CREATED);
 	}
 	
 	@PostMapping(path = "/boleto")
 	public ResponseEntity<?> paymentByBoleto(@Valid @RequestBody BoletoDto boletoDto) {
-		clientRepository.save(boletoDto.extractClient());
-		buyerRepository.save(boletoDto.extractBuyer());
+
 		Boleto boleto = boletoDto.extractBoleto();
 		boleto.processPayment();
 		
 		boletoRepository.save(boleto);
 		
-		return new ResponseEntity<>(boletoRepository.save(boleto), HttpStatus.CREATED);
+		return new ResponseEntity<>(boleto, HttpStatus.CREATED);
 	}
 		
 }

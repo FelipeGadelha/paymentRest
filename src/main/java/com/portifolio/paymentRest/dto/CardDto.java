@@ -12,51 +12,54 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.CreditCardNumber;
 import org.hibernate.validator.constraints.br.CPF;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.portifolio.paymentRest.models.Buyer;
 import com.portifolio.paymentRest.models.Card;
 import com.portifolio.paymentRest.models.Client;
 
 public class CardDto {
 	
-	@NotNull
-	@Digits(fraction = 2, integer = 20)
-	@DecimalMin(value = "0.01")
+	@NotNull(message = "amount is required")
+	@Digits(integer = 20, fraction = 2, message = "numeric value out of limit (<20 integers>, <2 fractioned> expected)")
+	@DecimalMin(value = "0.01", message = "must be greater than or equal to 0.01")
 	private BigDecimal amount;
 	
 	@NotNull(message = "customer name is required")
-	@NotBlank
+	@NotBlank(message = "customer name is required")
 	private String clientName;
+	
 	@NotNull(message = "buyer name is required")
-	@NotBlank
+	@NotBlank(message = "buyer name is required")
 	private String buyerName;
+	
+	@NotNull(message = "E-mail is required")
+	@NotBlank(message = "E-mail is required")
 	@Email(message = "E-mail is required")
 	private String buyerEmail;
+	
 	@NotNull(message = "cpf is required")
-	@CPF
+	@CPF(message = "Invalid CPF")
 	private String buyerCpf;
+	
 	@NotNull(message = "card hoder name is required")
-	@NotBlank
+	@NotBlank(message = "card hoder name is required")
 	private String cardHolderName;
-	@NotNull(message = "credit card number is required")
-	@CreditCardNumber
+	
+	@NotNull(message = "card number is required")
+	@CreditCardNumber(ignoreNonDigitCharacters = true, message = "invalid identification code")
 	private String cardNumber; ;
-//	@JsonDeserialize(using = LocalDateDeserializer.class)  
-//	@JsonSerialize(using = LocalDateSerializer.class) 
-//	@DateTimeFormat(iso = ISO.DATE)
-	@JsonFormat(pattern = "dd/MM/yyyy")
+
+	@JsonProperty("expiration_Date")
+	@JsonFormat(shape = Shape.STRING, pattern = "dd/MM/yyyy")
+	@NotNull(message = "this field is required")
 	private LocalDate cardExpirationDate;
 	
-	@NotNull(message = "cvv is required")
-	@Size(min = 3, max = 3, message = "must contain 3 numbers")
+	@NotNull(message = "cvv must contain 3 numbers")
+	@NotBlank(message = "cvv must contain 3 numbers")
+	@Size(min = 3, max = 3, message = "cvv must contain 3 numbers")
 	private String cardCvv;
 	
 	public CardDto(BigDecimal amount,
@@ -68,7 +71,6 @@ public class CardDto {
 			String cardNumber,
 			LocalDate cardExpirationDate,
 			String cardCvv) {
-		super();
 		this.amount = amount;
 		this.clientName = clientName;
 		this.buyerName = buyerName;

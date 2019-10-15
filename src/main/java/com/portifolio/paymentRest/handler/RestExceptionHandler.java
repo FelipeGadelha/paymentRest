@@ -1,4 +1,4 @@
-package com.portifolio.paymentRest.controller;
+package com.portifolio.paymentRest.handler;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -60,10 +60,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
 				.detail("Error parsing as date")
 				.developerMessage(hmnrException.getLocalizedMessage())
 				.build();
-		
-		
-		
-		
 		
 		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
 	}

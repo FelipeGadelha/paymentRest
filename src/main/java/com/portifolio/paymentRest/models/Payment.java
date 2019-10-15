@@ -37,17 +37,18 @@ public abstract class Payment implements Serializable {
 	
 	@Enumerated(EnumType.STRING)
 	private StatusPayment statusPayment = StatusPayment.WAITING;
-	
+	@Enumerated(EnumType.STRING)
 	private TypePayment typePayment;
 
 	public Payment() {
 		
 	}
 	
-	public Payment(BigDecimal amount, Client client, Buyer buyer) {
+	public Payment(BigDecimal amount, Client client, Buyer buyer, TypePayment typePayment) {
 		this.amount = amount;
 		this.client = client;
 		this.buyer = buyer;
+		this.typePayment = typePayment;
 	}
 
 	public Long getId() {

@@ -16,21 +16,23 @@ import com.portifolio.paymentRest.models.Client;
 
 public class BoletoDto {
 	
-	@NotNull
-	@Digits(fraction = 2, integer = 20)
-	@DecimalMin(value = "0.01")
+	@NotNull(message = "amount is required")
+	@Digits(integer = 20, fraction = 2, message = "numeric value out of limit (<20 integers>, <2 fractioned> expected)")
+	@DecimalMin(value = "0.01", message = "must be greater than or equal to 0.01")
 	private BigDecimal amount;
 	
 	@NotNull(message = "customer name is required")
-	@NotBlank
+	@NotBlank(message = "customer name is required")
 	private String clientName;
 	@NotNull(message = "buyer name is required")
-	@NotBlank
+	@NotBlank(message = "buyer name is required")
 	private String buyerName;
+	@NotNull(message = "E-mail is required")
+	@NotBlank(message = "E-mail is required")
 	@Email(message = "E-mail is required")
 	private String buyerEmail;
 	@NotNull(message = "cpf is required")
-	@CPF
+	@CPF(message = "Invalid CPF")
 	private String buyerCpf;
 
 	public BoletoDto(BigDecimal amount, String clientName, String buyerName, String buyerEmail, String buyerCpf) {
