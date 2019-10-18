@@ -5,10 +5,11 @@ import java.time.LocalDate;
 
 import javax.persistence.Entity;
 
+import com.portifolio.paymentRest.enuns.StatusPayment;
 import com.portifolio.paymentRest.enuns.TypePayment;
 
 @Entity
-public class Card extends Payment{
+public class PaymentCard extends Payment{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -17,10 +18,10 @@ public class Card extends Payment{
 	private LocalDate cardExpirationDate;
 	private String cardCvv;	
 	
-	public Card() {
+	public PaymentCard() {
 	}
 	
-	public Card(BigDecimal amount, Client client, Buyer buyer, String cardHolderName, String cardNumber, LocalDate cardExpirationDate, String cardCvv) {
+	public PaymentCard(BigDecimal amount, Client client, Buyer buyer, String cardHolderName, String cardNumber, LocalDate cardExpirationDate, String cardCvv) {
 		super(amount, client, buyer, TypePayment.CREDIT_CARD);
 		this.cardHolderName = cardHolderName;
 		this.cardNumber = cardNumber;
@@ -56,14 +57,14 @@ public class Card extends Payment{
 	public TypePayment getTypePayment() {
 		return TypePayment.CREDIT_CARD;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Card [cardHolderName=" + cardHolderName + ", cardNumber=" + cardNumber + ", cardExpirationDate="
 				+ cardExpirationDate + ", cardCvv=" + cardCvv + ", getId()=" + getId() + ", getAmount()=" + getAmount()
-				+ ", getClient()=" + getClient() + ", getBuyer()=" + getBuyer() + ", getStatusPayment()="
-				+ getStatusPayment() + ", toString()=" + super.toString() + ", getClass()=" + getClass()
+				+ ", getClient()=" + getClient() + ", getBuyer()=" + getBuyer() + ", toString()=" + super.toString() + 
+				", getClass()=" + getClass()
 				+ ", hashCode()=" + hashCode() + "]";
 	}
-
+	
 }

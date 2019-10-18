@@ -20,7 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-public class BoletoDtoTest {	
+public class PaymentBoletoDtoTest {	
 	
 	@Autowired
 	private TestRestTemplate restTemplate;
@@ -35,28 +35,28 @@ public class BoletoDtoTest {
 	
 	@Test
 	public void validatesBoletoWhenAmountIsNullShouldReturnStatusCode400BadRequest() {
-		BoletoDto boletoDto = new BoletoDto(null, "isabella", "felipe", "felipe@gadelha.com", "990.977.290-68");
+		PaymentBoletoDto boletoDto = new PaymentBoletoDto(null, "isabella", "felipe", "felipe@gadelha.com", "990.977.290-68");
 		ResponseEntity<String> entity = restTemplate.postForEntity("/v1/payment/boleto/", boletoDto, String.class);
 		assertThat(entity.getStatusCodeValue()).isEqualTo(400);
 		assertThat(entity.getBody()).contains("amount", "amount is required");
 	}
 	@Test
 	public void validatesBoletoWhenAmountIsNegativeShouldReturnStatusCode400BadRequest() {
-		BoletoDto boletoDto = new BoletoDto(new BigDecimal(-10.0), "isabella", "felipe", "felipe@gadelha.com", "990.977.290-68");
+		PaymentBoletoDto boletoDto = new PaymentBoletoDto(new BigDecimal(-10.0), "isabella", "felipe", "felipe@gadelha.com", "990.977.290-68");
 		ResponseEntity<String> entity = restTemplate.postForEntity("/v1/payment/boleto/", boletoDto, String.class);
 		assertThat(entity.getStatusCodeValue()).isEqualTo(400);
 		assertThat(entity.getBody()).contains("amount", "must be greater than or equal to 0.01");
 	}
 	@Test
 	public void validatesBoletoWhenAmountIsExceedsTheFractionalLimitShouldReturnStatusCode400BadRequest() {
-		BoletoDto boletoDto = new BoletoDto(new BigDecimal(10.111), "isabella", "felipe", "felipe@gadelha.com", "990.977.290-68");
+		PaymentBoletoDto boletoDto = new PaymentBoletoDto(new BigDecimal(10.111), "isabella", "felipe", "felipe@gadelha.com", "990.977.290-68");
 		ResponseEntity<String> entity = restTemplate.postForEntity("/v1/payment/boleto/", boletoDto, String.class);
 		assertThat(entity.getStatusCodeValue()).isEqualTo(400);
 		assertThat(entity.getBody()).contains("amount", "numeric value out of limit (<20 integers>, <2 fractioned> expected)");
 	}
 	@Test
 	public void validatesBoletoWhenAmountIsExceedsTheIntegerLimitShouldReturnStatusCode400BadRequest() {
-		BoletoDto boletoDto = new BoletoDto(new BigDecimal(100000000000000000000.11), "isabella", "felipe", "felipe@gadelha.com", "990.977.290-68");
+		PaymentBoletoDto boletoDto = new PaymentBoletoDto(new BigDecimal(100000000000000000000.11), "isabella", "felipe", "felipe@gadelha.com", "990.977.290-68");
 		ResponseEntity<String> entity = restTemplate.postForEntity("/v1/payment/boleto/", boletoDto, String.class);
 		assertThat(entity.getStatusCodeValue()).isEqualTo(400);
 		assertThat(entity.getBody()).contains("amount", "numeric value out of limit (<20 integers>, <2 fractioned> expected)");
@@ -64,7 +64,7 @@ public class BoletoDtoTest {
 	
 	@Test
 	public void validatesBoletoWhenClientNameIsNullShouldReturnStatusCode400BadRequest() {
-		BoletoDto boletoDto = new BoletoDto(new BigDecimal(50.0), null, "felipe", "felipe@gadelha.com", "990.977.290-68");
+		PaymentBoletoDto boletoDto = new PaymentBoletoDto(new BigDecimal(50.0), null, "felipe", "felipe@gadelha.com", "990.977.290-68");
 		ResponseEntity<String> entity = restTemplate.postForEntity("/v1/payment/boleto/", boletoDto, String.class);
 		assertThat(entity.getStatusCodeValue()).isEqualTo(400);
 		assertThat(entity.getBody()).contains("clientName", "customer name is required");
@@ -72,7 +72,7 @@ public class BoletoDtoTest {
 	
 	@Test
 	public void validatesBoletoWhenClientNameIsBlankShouldReturnStatusCode400BadRequest() {
-		BoletoDto boletoDto = new BoletoDto(new BigDecimal(50.0), "", "felipe", "felipe@gadelha.com", "990.977.290-68");
+		PaymentBoletoDto boletoDto = new PaymentBoletoDto(new BigDecimal(50.0), "", "felipe", "felipe@gadelha.com", "990.977.290-68");
 		ResponseEntity<String> entity = restTemplate.postForEntity("/v1/payment/boleto/", boletoDto, String.class);
 		assertThat(entity.getStatusCodeValue()).isEqualTo(400);
 		assertThat(entity.getBody()).contains("clientName", "customer name is required");
@@ -80,56 +80,56 @@ public class BoletoDtoTest {
 	
 	@Test
 	public void validatesBoletoWhenBuyerNameIsNullShouldReturnStatusCode400BadRequest() {
-		BoletoDto boletoDto = new BoletoDto(new BigDecimal(20.0), "isabella", null, "felipe@gadelha.com", "990.977.290-68");
+		PaymentBoletoDto boletoDto = new PaymentBoletoDto(new BigDecimal(20.0), "isabella", null, "felipe@gadelha.com", "990.977.290-68");
 		ResponseEntity<String> entity = restTemplate.postForEntity("/v1/payment/boleto/", boletoDto, String.class);
 		assertThat(entity.getStatusCodeValue()).isEqualTo(400);
 		assertThat(entity.getBody()).contains("buyerName", "buyer name is required");
 	}
 	@Test
 	public void validatesBoletoWhenBuyerNameIsBlankShouldReturnStatusCode400BadRequest() {
-		BoletoDto boletoDto = new BoletoDto(new BigDecimal(20.0), "isabella", "", "felipe@gadelha.com", "990.977.290-68");
+		PaymentBoletoDto boletoDto = new PaymentBoletoDto(new BigDecimal(20.0), "isabella", "", "felipe@gadelha.com", "990.977.290-68");
 		ResponseEntity<String> entity = restTemplate.postForEntity("/v1/payment/boleto/", boletoDto, String.class);
 		assertThat(entity.getStatusCodeValue()).isEqualTo(400);
 		assertThat(entity.getBody()).contains("buyerName", "buyer name is required");
 	}
 	@Test
 	public void validatesBoletoWhenBuyerEmailIsNullShouldReturnStatusCode400BadRequest() {
-		BoletoDto boletoDto = new BoletoDto(new BigDecimal(20.0), "isabella", "felipe", null, "990.977.290-68");
+		PaymentBoletoDto boletoDto = new PaymentBoletoDto(new BigDecimal(20.0), "isabella", "felipe", null, "990.977.290-68");
 		ResponseEntity<String> entity = restTemplate.postForEntity("/v1/payment/boleto/", boletoDto, String.class);
 		assertThat(entity.getStatusCodeValue()).isEqualTo(400);
 		assertThat(entity.getBody()).contains("buyerEmail", "E-mail is required");
 	}
 	@Test
 	public void validatesBoletoWhenBuyerEmailIsBlankShouldReturnStatusCode400BadRequest() {
-		BoletoDto boletoDto = new BoletoDto(new BigDecimal(20.0), "isabella", "felipe", "", "990.977.290-68");
+		PaymentBoletoDto boletoDto = new PaymentBoletoDto(new BigDecimal(20.0), "isabella", "felipe", "", "990.977.290-68");
 		ResponseEntity<String> entity = restTemplate.postForEntity("/v1/payment/boleto/", boletoDto, String.class);
 		assertThat(entity.getStatusCodeValue()).isEqualTo(400);
 		assertThat(entity.getBody()).contains("buyerEmail", "E-mail is required");
 	}
 	@Test
 	public void validatesBoletoWhenBuyerEmailHasNoAtSignShouldReturnStatusCode400BadRequest() {
-		BoletoDto boletoDto = new BoletoDto(new BigDecimal(20.0), "isabella", "felipe", "felipegadelha.com", "990.977.290-68");
+		PaymentBoletoDto boletoDto = new PaymentBoletoDto(new BigDecimal(20.0), "isabella", "felipe", "felipegadelha.com", "990.977.290-68");
 		ResponseEntity<String> entity = restTemplate.postForEntity("/v1/payment/boleto/", boletoDto, String.class);
 		assertThat(entity.getStatusCodeValue()).isEqualTo(400);
 		assertThat(entity.getBody()).contains("buyerEmail", "E-mail is required");
 	}
 	@Test
 	public void validatesBoletoWhenBuyerCpfIsNullShouldReturnStatusCode400BadRequest() {
-		BoletoDto boletoDto = new BoletoDto(new BigDecimal(20.0), "isabella", "felipe", "felipe@gadelha.com", null);
+		PaymentBoletoDto boletoDto = new PaymentBoletoDto(new BigDecimal(20.0), "isabella", "felipe", "felipe@gadelha.com", null);
 		ResponseEntity<String> entity = restTemplate.postForEntity("/v1/payment/boleto/", boletoDto, String.class);
 		assertThat(entity.getStatusCodeValue()).isEqualTo(400);
 		assertThat(entity.getBody()).contains("buyerCpf", "cpf is required");
 	}
 	@Test
 	public void validatesBoletoWhenBuyerCpfIsBlankShouldReturnStatusCode400BadRequest() {
-		BoletoDto boletoDto = new BoletoDto(new BigDecimal(20.0), "isabella", "felipe", "felipe@gadelha.com", "");
+		PaymentBoletoDto boletoDto = new PaymentBoletoDto(new BigDecimal(20.0), "isabella", "felipe", "felipe@gadelha.com", "");
 		ResponseEntity<String> entity = restTemplate.postForEntity("/v1/payment/boleto/", boletoDto, String.class);
 		assertThat(entity.getStatusCodeValue()).isEqualTo(400);
 		assertThat(entity.getBody()).contains("buyerCpf", "Invalid CPF");
 	}
 	@Test
 	public void validatesBoletoWhenBuyerCpfIsInvalidShouldReturnStatusCode400BadRequest() {
-		BoletoDto boletoDto = new BoletoDto(new BigDecimal(20.0), "isabella", "felipe", "felipe@gadelha.com", "111.111.111-11");
+		PaymentBoletoDto boletoDto = new PaymentBoletoDto(new BigDecimal(20.0), "isabella", "felipe", "felipe@gadelha.com", "111.111.111-11");
 		ResponseEntity<String> entity = restTemplate.postForEntity("/v1/payment/boleto/", boletoDto, String.class);
 		assertThat(entity.getStatusCodeValue()).isEqualTo(400);
 		assertThat(entity.getBody()).contains("buyerCpf", "Invalid CPF");

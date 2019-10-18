@@ -11,54 +11,38 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.portifolio.paymentRest.dto.BoletoDto;
-import com.portifolio.paymentRest.dto.CardDto;
-import com.portifolio.paymentRest.models.Boleto;
-import com.portifolio.paymentRest.models.Card;
-import com.portifolio.paymentRest.repository.BoletoRepository;
-import com.portifolio.paymentRest.repository.BuyerRepository;
-import com.portifolio.paymentRest.repository.CardRepository;
-import com.portifolio.paymentRest.repository.ClientRepository;
+import com.portifolio.paymentRest.dto.PaymentBoletoDto;
+import com.portifolio.paymentRest.dto.PaymentCardDto;
+import com.portifolio.paymentRest.models.PaymentBoleto;
+import com.portifolio.paymentRest.models.PaymentCard;
+import com.portifolio.paymentRest.serviceImpl.PaymentBoletoServiceImpl;
+import com.portifolio.paymentRest.serviceImpl.PaymentCardServiceImpl;
 
 @RestController
 @RequestMapping("/v1/payment")
 public class PaymentController {
 
 	@Autowired
-	private final BoletoRepository boletoRepository;
+	private final PaymentCardServiceImpl paymentCardServiceImpl;
+	
 	@Autowired
-	private final CardRepository cardRepository;
+	private final PaymentBoletoServiceImpl paymentBoletoServiceImpl;
 	
-	public PaymentController(BoletoRepository boletoRepository, CardRepository cardRepository) {
-		this.boletoRepository = boletoRepository;
-		this.cardRepository = cardRepository;
-	}
-	
-	@GetMapping(path = "/{id}")
-	public ResponseEntity<?> findPaymentById(){
-		
-		
-		return new ResponseEntity<>(HttpStatus.OK);
+	public PaymentController(PaymentCardServiceImpl paymentCardServiceImpl, PaymentBoletoServiceImpl boletoServiceImpl) {
+		this.paymentCardServiceImpl = paymentCardServiceImpl;
+		this.paymentBoletoServiceImpl = boletoServiceImpl;
 	}
 	
 	@PostMapping(path = "/creditCard")
-	public ResponseEntity<?> paymentByCreditCard(@Valid @RequestBody CardDto cardDto) {
-
-		Card card = cardDto.extractCard();
-		card.processPayment();
-		cardRepository.save(card);
-		return new ResponseEntity<>(card, HttpStatus.CREATED);
+	public ResponseEntity<?> paymentByCreditCard(@Valid @RequestBody PaymentCardDto paymentCardDto){		
+		PaymentCard paymentCardResponse = paymentCardServiceImpl.paymentCard(paymentCardDto);
+		return new ResponseEntity<>(paymentCardResponse, HttpStatus.CREATED);
 	}
 	
 	@PostMapping(path = "/boleto")
-	public ResponseEntity<?> paymentByBoleto(@Valid @RequestBody BoletoDto boletoDto) {
-
-		Boleto boleto = boletoDto.extractBoleto();
-		boleto.processPayment();
-		
-		boletoRepository.save(boleto);
-		
-		return new ResponseEntity<>(boleto, HttpStatus.CREATED);
+	public ResponseEntity<?> paymentByBoleto(@Valid @RequestBody PaymentBoletoDto paymentBoletoDto) {
+		PaymentBoleto paymentBoletoResponse = paymentBoletoServiceImpl.paymentBoleto(paymentBoletoDto);
+		return new ResponseEntity<>(paymentBoletoResponse, HttpStatus.CREATED);
 	}
 		
 }

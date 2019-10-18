@@ -2,8 +2,14 @@ package com.portifolio.paymentRest.models;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -35,11 +41,16 @@ public abstract class Payment implements Serializable {
 	@ManyToOne(optional = false, cascade = CascadeType.ALL)
 	private Buyer buyer;
 	
-	@Enumerated(EnumType.STRING)
-	private StatusPayment statusPayment = StatusPayment.WAITING;
+	@Embedded
+	@AttributeOverrides({
+		  @AttributeOverride( name = "statusPayment", column = @Column(name = "status_payment")),
+		  @AttributeOverride( name = "dataEvent", column = @Column(name = "data_event"))
+		})
+	private List<Event> events = new ArrayList<Event>();
+	
 	@Enumerated(EnumType.STRING)
 	private TypePayment typePayment;
-
+	
 	public Payment() {
 		
 	}
@@ -49,6 +60,7 @@ public abstract class Payment implements Serializable {
 		this.client = client;
 		this.buyer = buyer;
 		this.typePayment = typePayment;
+		addEvent(new Event(StatusPayment.CREATED));
 	}
 
 	public Long getId() {
@@ -83,12 +95,11 @@ public abstract class Payment implements Serializable {
 		this.buyer = buyer;
 	}
 
-	public StatusPayment getStatusPayment() {
-		return statusPayment;
+	public List<Event> getEvents() {
+		return events;
 	}
-
-	public void setStatusPayment(StatusPayment statusPayment) {
-		this.statusPayment = statusPayment;
+	public void addEvent(Event event) {
+		events.add(event);
 	}
 	public TypePayment getTypePayment() {
 		return typePayment;
@@ -96,19 +107,10 @@ public abstract class Payment implements Serializable {
 	public void setTypePayment(TypePayment typePayment) {
 		this.typePayment = typePayment;
 	}
-	
-	public void processPayment() {
-		setStatusPayment(StatusPayment.IN_ANALYSIS);
-		
-	}
 
 	@Override
 	public String toString() {
-		return "Payment [id= " + id + ", amount= " + amount + ", client= " + client + ", buyer= " + buyer
-				+ ", statusPayment= " + statusPayment + "]";
-	}
-	
-	
-		
+		return "Payment [id= " + id + ", amount= " + amount + ", client= " + client + ", buyer= " + buyer + "]";
+	}		
 	
 }

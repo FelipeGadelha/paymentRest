@@ -17,10 +17,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.portifolio.paymentRest.models.Buyer;
-import com.portifolio.paymentRest.models.Card;
 import com.portifolio.paymentRest.models.Client;
+import com.portifolio.paymentRest.models.PaymentCard;
 
-public class CardDto {
+public class PaymentCardDto {
 	
 	@NotNull(message = "amount is required")
 	@Digits(integer = 20, fraction = 2, message = "numeric value out of limit (<20 integers>, <2 fractioned> expected)")
@@ -62,7 +62,7 @@ public class CardDto {
 	@Size(min = 3, max = 3, message = "cvv must contain 3 numbers")
 	private String cardCvv;
 	
-	public CardDto(BigDecimal amount,
+	public PaymentCardDto(BigDecimal amount,
 			String clientName,
 			String buyerName,
 			String buyerEmail,
@@ -85,56 +85,37 @@ public class CardDto {
 	public BigDecimal getAmount() {
 		return amount;
 	}
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
-	}
+	
 	public String getClientName() {
 		return clientName;
 	}
-	public void setClientName(String clientName) {
-		this.clientName = clientName;
-	}
+	
 	public String getBuyerName() {
 		return buyerName;
 	}
-	public void setBuyerName(String buyerName) {
-		this.buyerName = buyerName;
-	}
+	
 	public String getBuyerEmail() {
 		return buyerEmail;
 	}
-	public void setBuyerEmail(String buyerEmail) {
-		this.buyerEmail = buyerEmail;
-	}
+	
 	public String getBuyerCpf() {
 		return buyerCpf;
 	}
-	public void setBuyerCpf(String buyerCpf) {
-		this.buyerCpf = buyerCpf;
-	}
+	
 	public String getCardHolderName() {
 		return cardHolderName;
 	}
-	public void setCardHolderName(String cardHolderName) {
-		this.cardHolderName = cardHolderName;
-	}
+	
 	public String getCardNumber() {
 		return cardNumber;
 	}
-	public void setCardNumber(String cardNumber) {
-		this.cardNumber = cardNumber;
-	}
+	
 	public LocalDate getCardExpirationDate() {
 		return cardExpirationDate;
 	}
-	public void setCardExpirationDate(LocalDate cardExpirationDate) {
-		this.cardExpirationDate = cardExpirationDate;
-	}
+	
 	public String getCardCvv() {
 		return cardCvv;
-	}
-	public void setCardCvv(String cardCvv) {
-		this.cardCvv = cardCvv;
 	}
 	
 	public Buyer extractBuyer(){
@@ -145,8 +126,8 @@ public class CardDto {
 	public Client extractClient() {
 		return new Client(getClientName());
 	}
-	public Card extractCard() {
-		return new Card(getAmount(), 
+	public PaymentCard extractCard() {
+		return new PaymentCard(getAmount(), 
 				extractClient(), 
 				extractBuyer(), 
 				getCardHolderName(), 

@@ -8,29 +8,26 @@ import javax.persistence.Entity;
 import com.portifolio.paymentRest.enuns.TypePayment;
 
 @Entity
-public class Boleto extends Payment {
+public class PaymentBoleto extends Payment {
 
 	private String boletoNumber;
 
-	public Boleto() {
+	public PaymentBoleto() {
 
 	}
-	public Boleto(BigDecimal amount, Client client, Buyer buyer) {
+	public PaymentBoleto(BigDecimal amount, Client client, Buyer buyer) {
 		super(amount, client, buyer, TypePayment.BOLETO);
-
+		numberGenerator();
 	}
 
 	public String getBoletoNumber() {
 		return boletoNumber;
 	}
-
 	public void setBoletoNumber(String boletoNumber) {
 		this.boletoNumber = boletoNumber;
 	}
 
-	@Override
-	public void processPayment() {
-		super.processPayment();
+	public void numberGenerator() {
 		Random numberGenerator = new Random();
 		this.setBoletoNumber(String.valueOf(numberGenerator.nextInt(Integer.MAX_VALUE)));
 	}
@@ -38,8 +35,9 @@ public class Boleto extends Payment {
 	@Override
 	public String toString() {
 		return "Boleto [boletoNumber=" + boletoNumber + ", Id= " + getId() + ", Amount= " + getAmount() + ", Client= "
-				+ getClient() + ", Buyer= " + getBuyer() + ", StatusPayment=" + getStatusPayment() + ", "
+				+ getClient() + ", Buyer= " + getBuyer() + ", "
 				+ super.toString();
 	}
+	
 
 }

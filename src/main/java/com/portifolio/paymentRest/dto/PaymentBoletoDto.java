@@ -10,11 +10,11 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.br.CPF;
 
-import com.portifolio.paymentRest.models.Boleto;
+import com.portifolio.paymentRest.models.PaymentBoleto;
 import com.portifolio.paymentRest.models.Buyer;
 import com.portifolio.paymentRest.models.Client;
 
-public class BoletoDto {
+public class PaymentBoletoDto {
 	
 	@NotNull(message = "amount is required")
 	@Digits(integer = 20, fraction = 2, message = "numeric value out of limit (<20 integers>, <2 fractioned> expected)")
@@ -35,7 +35,7 @@ public class BoletoDto {
 	@CPF(message = "Invalid CPF")
 	private String buyerCpf;
 
-	public BoletoDto(BigDecimal amount, String clientName, String buyerName, String buyerEmail, String buyerCpf) {
+	public PaymentBoletoDto(BigDecimal amount, String clientName, String buyerName, String buyerEmail, String buyerCpf) {
 		this.amount = amount;
 		this.clientName = clientName;
 		this.buyerName = buyerName;
@@ -47,40 +47,20 @@ public class BoletoDto {
 		return amount;
 	}
 
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
-	}
-
 	public String getClientName() {
 		return clientName;
-	}
-
-	public void setClientName(String clientName) {
-		this.clientName = clientName;
 	}
 
 	public String getBuyerName() {
 		return buyerName;
 	}
 
-	public void setBuyerName(String buyerName) {
-		this.buyerName = buyerName;
-	}
-
 	public String getBuyerEmail() {
 		return buyerEmail;
 	}
 
-	public void setBuyerEmail(String buyerEmail) {
-		this.buyerEmail = buyerEmail;
-	}
-
 	public String getBuyerCpf() {
 		return buyerCpf;
-	}
-
-	public void setBuyerCpf(String buyerCpf) {
-		this.buyerCpf = buyerCpf;
 	}
 	
 	public Buyer extractBuyer(){
@@ -92,8 +72,8 @@ public class BoletoDto {
 		return new Client(getClientName());
 	}
 	
-	public Boleto extractBoleto() {
-		return new Boleto(getAmount(), extractClient(), extractBuyer());
+	public PaymentBoleto extractBoleto() {
+		return new PaymentBoleto(getAmount(), extractClient(), extractBuyer());
 	}
 	
 }
