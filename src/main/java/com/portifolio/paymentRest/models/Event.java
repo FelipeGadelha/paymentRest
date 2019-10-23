@@ -17,7 +17,6 @@ public class Event {
 	private LocalDateTime dataEvent;
 	
 	public Event() {
-		
 	}
 	
 	public Event(StatusPayment statusPayment) {

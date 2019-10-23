@@ -35,7 +35,11 @@ public class PaymentBoletoDto {
 	@CPF(message = "Invalid CPF")
 	private String buyerCpf;
 
-	public PaymentBoletoDto(BigDecimal amount, String clientName, String buyerName, String buyerEmail, String buyerCpf) {
+	public PaymentBoletoDto(BigDecimal amount, 
+							String clientName, 
+							String buyerName, 
+							String buyerEmail, 
+							String buyerCpf) {
 		this.amount = amount;
 		this.clientName = clientName;
 		this.buyerName = buyerName;

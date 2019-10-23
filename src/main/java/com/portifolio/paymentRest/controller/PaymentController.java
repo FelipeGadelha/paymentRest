@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +34,18 @@ public class PaymentController {
 		this.paymentBoletoServiceImpl = boletoServiceImpl;
 	}
 	
+	@GetMapping(path = "/creditCard/{id}")
+	public ResponseEntity<?> findPaymentCreditCardById(@PathVariable Long id) {
+		PaymentCard paymentCard = paymentCardServiceImpl.findPaymentCardById(id);
+		return new ResponseEntity<>(paymentCard, HttpStatus.OK);
+	}
+	@GetMapping(path = "/boleto/{id}")
+	public ResponseEntity<?> findPaymentBoletoById(@PathVariable Long id){
+		PaymentBoleto paymentBoleto = paymentBoletoServiceImpl.findPaymentBoletoById(id);
+		return new ResponseEntity<>(paymentBoleto, HttpStatus.OK);
+		
+	}
+	
 	@PostMapping(path = "/creditCard")
 	public ResponseEntity<?> paymentByCreditCard(@Valid @RequestBody PaymentCardDto paymentCardDto){		
 		PaymentCard paymentCardResponse = paymentCardServiceImpl.paymentCard(paymentCardDto);
@@ -43,8 +56,7 @@ public class PaymentController {
 	public ResponseEntity<?> paymentByBoleto(@Valid @RequestBody PaymentBoletoDto paymentBoletoDto) {
 		PaymentBoleto paymentBoletoResponse = paymentBoletoServiceImpl.paymentBoleto(paymentBoletoDto);
 		return new ResponseEntity<>(paymentBoletoResponse, HttpStatus.CREATED);
-	}
-		
+	}		
 }
 
 

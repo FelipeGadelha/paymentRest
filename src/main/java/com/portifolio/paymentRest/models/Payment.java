@@ -5,11 +5,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -18,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.portifolio.paymentRest.enuns.StatusPayment;
@@ -41,11 +40,9 @@ public abstract class Payment implements Serializable {
 	@ManyToOne(optional = false, cascade = CascadeType.ALL)
 	private Buyer buyer;
 	
-	@Embedded
-	@AttributeOverrides({
-		  @AttributeOverride( name = "statusPayment", column = @Column(name = "status_payment")),
-		  @AttributeOverride( name = "dataEvent", column = @Column(name = "data_event"))
-		})
+	@ElementCollection
+	@CollectionTable(name = "events",
+			joinColumns = @JoinColumn(name = "event_Id"))
 	private List<Event> events = new ArrayList<Event>();
 	
 	@Enumerated(EnumType.STRING)
@@ -111,6 +108,37 @@ public abstract class Payment implements Serializable {
 	@Override
 	public String toString() {
 		return "Payment [id= " + id + ", amount= " + amount + ", client= " + client + ", buyer= " + buyer + "]";
-	}		
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((typePayment == null) ? 0 : typePayment.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Payment other = (Payment) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (typePayment != other.typePayment)
+			return false;
+		return true;
+	}
+
+
+	
 	
 }

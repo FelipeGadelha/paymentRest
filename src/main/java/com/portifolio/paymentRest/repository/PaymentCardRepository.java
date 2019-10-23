@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.portifolio.paymentRest.models.PaymentCard;
 
 @Repository
-public interface CardRepository extends JpaRepository<PaymentCard, Long>{
+public interface PaymentCardRepository extends JpaRepository<PaymentCard, Long>{
 
 	
 	

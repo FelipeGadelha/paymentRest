@@ -13,10 +13,13 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.portifolio.paymentRest.error.ErrorDetails;
+import com.portifolio.paymentRest.error.ResourceNotFoundDetails;
+import com.portifolio.paymentRest.error.ResourceNotFoundException;
 import com.portifolio.paymentRest.error.ValidationErrorDetails;
 
 
@@ -34,9 +37,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
 		
 		Map<List<String>, List<String>> map = new HashMap<>();
 		map.put(fields, fieldMessages);
-		
-		
-		
+
 		ValidationErrorDetails validationErrorDetails = ValidationErrorDetails.Builder.newBuilder()
 				.timestamp(new Date().getTime())
 				.status(status.value())
@@ -62,6 +63,39 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
 				.build();
 		
 		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(ResourceNotFoundException.class)
+	public ResponseEntity<?> handlerResourceNotFoundException(ResourceNotFoundException rnfException){
+		ResourceNotFoundDetails rnfDetails = ResourceNotFoundDetails.Builder
+				.newBuilder()
+				.timestamp(new Date().getTime())
+				.status(HttpStatus.NOT_FOUND.value())
+				.title("Resource not found")
+				.detail(rnfException.getLocalizedMessage())
+				.developerMessage(rnfException.getClass().getName())
+				.build();
+		
+		return new ResponseEntity<>(rnfDetails, HttpStatus.NOT_FOUND);
+	}
+	
+	@Override
+	protected ResponseEntity<Object> handleExceptionInternal(Exception ex, 
+			Object body, 
+			HttpHeaders headers,
+			HttpStatus status, 
+			WebRequest request) {
+		
+		ErrorDetails errorDetails = ErrorDetails.Builder
+				.newBuilder()
+				.timestamp(new Date().getTime())
+				.status(status.value())
+				.title("internal Server Error")
+				.detail(ex.getLocalizedMessage())
+				.developerMessage(ex.getClass().getName())
+				.build();
+		
+		return  new ResponseEntity<>(errorDetails, headers, status);
 	}
 	
 	

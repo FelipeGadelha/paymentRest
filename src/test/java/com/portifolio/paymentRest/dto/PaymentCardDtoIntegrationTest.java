@@ -25,7 +25,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-public class PaymentCardDtoTest {	
+public class PaymentCardDtoIntegrationTest {	
 	
 	@Autowired
 	private TestRestTemplate restTemplate;

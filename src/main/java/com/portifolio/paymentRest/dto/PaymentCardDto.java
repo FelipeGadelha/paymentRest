@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -55,6 +56,7 @@ public class PaymentCardDto {
 	@JsonProperty("expiration_Date")
 	@JsonFormat(shape = Shape.STRING, pattern = "dd/MM/yyyy")
 	@NotNull(message = "this field is required")
+	@Future(message = "this card is expiration")
 	private LocalDate cardExpirationDate;
 	
 	@NotNull(message = "cvv must contain 3 numbers")
