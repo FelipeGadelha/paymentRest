@@ -19,6 +19,8 @@ import com.portifolio.paymentRest.models.PaymentCard;
 import com.portifolio.paymentRest.serviceImpl.PaymentBoletoServiceImpl;
 import com.portifolio.paymentRest.serviceImpl.PaymentCardServiceImpl;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/v1/payment")
 public class PaymentController {
@@ -35,11 +37,13 @@ public class PaymentController {
 	}
 	
 	@GetMapping(path = "/creditCard/{id}")
+	@ApiOperation(value = "Return type payment credit-card based on id", response = PaymentCard.class)
 	public ResponseEntity<?> findPaymentCreditCardById(@PathVariable Long id) {
 		PaymentCard paymentCard = paymentCardServiceImpl.findPaymentCardById(id);
 		return new ResponseEntity<>(paymentCard, HttpStatus.OK);
 	}
 	@GetMapping(path = "/boleto/{id}")
+	@ApiOperation(value = "Return type payment boleto based on id", response = PaymentBoleto.class)
 	public ResponseEntity<?> findPaymentBoletoById(@PathVariable Long id){
 		PaymentBoleto paymentBoleto = paymentBoletoServiceImpl.findPaymentBoletoById(id);
 		return new ResponseEntity<>(paymentBoleto, HttpStatus.OK);

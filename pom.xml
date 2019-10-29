@@ -9,10 +9,10 @@
 		<version>2.1.8.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.portifolio.RestPagamentos</groupId>
-	<artifactId>RestPagamentos</artifactId>
+	<groupId>com.portifolio.paymentRest</groupId>
+	<artifactId>paymentRest</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>RestPagamentos</name>
+	<name>paymentRest</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
@@ -36,7 +36,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -46,6 +46,21 @@
 			<artifactId>mssql-jdbc</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>de.codecentric</groupId> -->
+		<!-- <artifactId>spring-boot-admin-starter-client</artifactId> -->
+		<!-- <version>2.1.4</version> -->
+		<!-- </dependency> -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
